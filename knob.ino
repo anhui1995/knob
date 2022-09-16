@@ -189,7 +189,7 @@ void setBigNum(int v) {
   }
 
 
-  + dispBuffer[14] % 2;
+//   dispBuffer[14] = tmpBuffer + dispBuffer[14] % 2;
   WriteOneData(11 , dispBuffer[11]);
   WriteOneData(12 , dispBuffer[12]);
 
@@ -234,8 +234,7 @@ void setLittleTemp(uint16_t v) {
   tmpBuffer = getHex(v3);
 
   dispBuffer[19] = tmpBuffer % 100;
-  dispBuffer[20] = tmpBuffer / 100;
-  dispBuffer[20] = dispBuffer[20] + dispBuffer[20] % 2;
+  dispBuffer[20] = tmpBuffer / 100 + dispBuffer[20] % 2;
   WriteOneData(19 , dispBuffer[19]);
   WriteOneData(20 , dispBuffer[20]);
 
