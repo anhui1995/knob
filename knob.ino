@@ -37,22 +37,23 @@ ClosedCube_HDC1080 hdc1080;
 #define STAPSK  "psk"
 #endif
 
-
+// 电池电压检测相关
 int batValue = 0;
 int batNum = 0;
 int sensorPin = A0;
 
+// 背光引脚
 int ledPin = 15;
 int ledValue = 0;
 int ledValueOld = 0;
 
-
+// 屏幕控制引脚定义
 int wrPin = 3;
 int csPin = 0;
 int dataPin = 1;
 
 
-
+// 顶部按键和编码器引脚
 int keyPin = 14;
 int ctrlRPin = 12;
 int ctrlLPin = 13;
@@ -74,6 +75,7 @@ uchar dispBuffer[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 int isSocConnected = 0;
 int isSocConnectedOld = 0;
 
+// 屏幕数字编码转换
 uint16_t getHex(int n) {
   uint16_t tmpBuffer[2] = {0, 0};
   switch (n) {
@@ -343,7 +345,7 @@ void setBatValue(int v) {
 
 
 /*
-  tempFlog wifiFlog fanFlog
+  地址：显示控制
   0：边缘短线 * 4
   1：信号强度 * 3    摆风标志
   2：边缘短线 * 4
@@ -390,7 +392,7 @@ void setBatValue(int v) {
 
 
 
-#define SYSDIS   0x00         //关系统振荡器和LCD偏压发生器
+#define SYSDIS   0x00     //关系统振荡器和LCD偏压发生器
 #define SYSEN    0x02    //打开系统振荡器
 
 #define LCDOFF   0x04     //关LCD偏压
@@ -740,26 +742,10 @@ void handleRoot() {
   }
 
 
-  //  req = (String)"{codq:20,bat:" + batValue + "}";
   req = (String)"{\"codq\":20,\"batValue\":" + batValue + ",\"batNum\":" + batNum + ",\"millis\":" + millis() + "}";
   server.send(200, "text/html", req);
 
 }
-
-
-//      tempFlog(val);
-//    } else if (cmd == 41) {
-//      fanFlog(val);
-//    } else if (cmd == 42) {
-//      wifiFlog(val);
-
-//int tempFlogNum = 0;
-//int fanFlogNum = 0;
-//int wifiFlogNum = 0;
-//
-//int tempFlogNumOld = 0;
-//int fanFlogNumOld = 0;
-//int wifiFlogNumOld = 0;
 
 
 int ctrlROld = 0;
@@ -773,20 +759,7 @@ void sendCommand(String cmd)
   if (ctrlAvail == 1) {
     webSocket.sendTXT(cmd);
   }
-  //  WiFiClient client;
-  //  HTTPClient http_client;
-  //  String data = "nn";
-  //  String req = (String)hostdd + "text?" + cmd;
-  //  http_client.begin(client,req);
-  //  int http_code = http_client.GET();
-  //
-  //  if (http_code > 0)
-  //  {
-  //    data = http_client.getString();
-  //    Serial.println("WiFi连接失败，请用手机进行配网");
-  //    Serial.println(data);
-  //
-  //  }
+
 }
 
 
@@ -800,7 +773,7 @@ int ctrlNum = 0;
 int ctrlNumOld = 0;
 long ctrlNumOldTime = 0;
 long vulemTime = 0;
-//上一曲下一曲变动，两次之间要谈起按键
+//上一曲下一曲变动，两次之间要弹起按键
 long nextUpTime = 0;
 void loop(void) {
   webSocket.loop();
